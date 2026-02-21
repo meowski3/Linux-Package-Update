@@ -50,6 +50,7 @@ function update(){
 #This function is just meant to be ran in case of a failure to notify the user on the console
 function update_fail(){
     echo "No luck updating the system using $1, please try again."
+    exit 1
 }
 
 if (( redhat_linux )); then
