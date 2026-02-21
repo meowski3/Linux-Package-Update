@@ -56,7 +56,7 @@ if (( redhat_linux )); then
     echo "Updating redhat based linux system using yum"
     update "yum" 2>/dev/null || update_fail "yum"
 elif (( debian_linux )); then
-    echo "Updating debian based linux system, using apt"
+    echo "Updating debian based linux system using apt"
     update "apt" 2>/dev/null || update_fail "apt"
 else
     echo "No version was specified, looking at the /etc/os-release info to determine what package manager to use."
@@ -64,10 +64,10 @@ else
 
     if [[ ${linux_version} =~ "Fedora" || ${linux_version} =~ "Alma" || ${linux_version} =~ "CentOS" ]]; then
         echo "Updating redhat based linux system using yum"
-        update "yum" 2>/dev/null || update_fail
+        update "yum" 2>/dev/null || update_fail "yum"
     elif [[ ${linux_version} =~ "Debian" || ${linux_version} =~ "Ubuntu" ]]; then
         echo "Updating debian based linux system using apt"
-        update "apt" 2>/dev/null || update_fail
+        update "apt" 2>/dev/null || update_fail "apt"
     else
         echo "Unkown linux distro"
     fi
