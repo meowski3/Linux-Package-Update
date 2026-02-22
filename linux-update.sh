@@ -33,10 +33,12 @@ while getopts "dru" opt; do
     \?)
       # Handle invalid options (getopts sets $opt to ?)
       echo "Invalid option: -$OPTARG" >&2
+      exit 1
       ;;
     :)
       # Handle missing arguments (if a required arg is missing)
       echo "Option -$OPTARG requires an argument." >&2
+      exit 1
       ;;
   esac
 done
