@@ -7,11 +7,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 function usage(){
     cat <<EOF
-        example: Usage [-d] [-r] []
+        example: Usage [-d] [-r] [-h] []
         
-        -r       Update redhat based systems
+        -r       Update Redhat based systems
         -d       Update Debian based systems
-        -u       Display usage
+        -h       Display script usage
 
         Leave blank if you would like the script to determine what package manager to use.
 EOF
@@ -19,7 +19,7 @@ EOF
 
 redhat_linux=0
 debian_linux=0
-while getopts "dru" opt; do
+while getopts "drh" opt; do
   case $opt in
     d)
       #Updating debian based linux systems
@@ -29,7 +29,7 @@ while getopts "dru" opt; do
       #Updating redhat based linux systems
       redhat_linux=1
       ;;
-    u)
+    h)
       # Display script usage
       usage
       exit
@@ -37,11 +37,7 @@ while getopts "dru" opt; do
     \?)
       # Handle invalid options (getopts sets $opt to ?)
       echo "Invalid option: -$OPTARG" >&2
-      exit 1
-      ;;
-    :)
-      # Handle missing arguments (if a required arg is missing)
-      echo "Option -$OPTARG requires an argument." >&2
+      usage
       exit 1
       ;;
   esac
