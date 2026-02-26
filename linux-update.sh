@@ -1,6 +1,10 @@
 #!/bin/bash
 # A simple script that takes the version of linux that its running on and uses the appropriate package manager to update the repos
 
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 function usage(){
     cat <<EOF
         example: Usage [-d] [-r] []
