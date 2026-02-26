@@ -51,7 +51,7 @@ Update a Debian-based system (using apt):
 ### Display Help
 Show usage information:
 ```bash
-./linux-update.sh -u
+./linux-update.sh -h
 ```
 
 ## Options
@@ -60,7 +60,7 @@ Show usage information:
 |--------|-------------|
 | `-r` | Force update using Red Hat package manager (yum) |
 | `-d` | Force update using Debian package manager (apt) |
-| `-u` | Display usage information |
+| `-h` | Display usage information |
 | (none) | Auto-detect and use the appropriate package manager |
 
 ## Features
@@ -145,12 +145,12 @@ Updating redhat based linux system using yum
 
 ### Example 3: Display usage
 ```bash
-$ ./linux-update.sh -u
-    example: Usage [-d] [-r] []
+$ ./linux-update.sh -h
+    example: Usage [-d] [-r] [-h] []
     
-    -r       Update redhat based systems
+    -r       Update Redhat based systems
     -d       Update Debian based systems
-    -u       Display usage
+    -h       Display usage
 
     Leave blank if you would like the script to determine what package manager to use.
 ```
@@ -180,4 +180,4 @@ Contributions are welcome! Feel free to submit pull requests or open issues for 
 
 ---
 
-**Last Updated:** 2026-02-22
+**Last Updated:** 2026-02-25
