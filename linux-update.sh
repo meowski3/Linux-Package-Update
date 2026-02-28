@@ -7,19 +7,27 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 function usage(){
     cat <<EOF
-        example: Usage [-d] [-r] [-h] []
+        example: Usage [-d] [-r] [-A] [-a] [-p] [-o] [-h] []
         
         -r       Update Redhat based systems
         -d       Update Debian based systems
+        -A       Update Arch based systems
+        -a       Update Alma based systems
+        -p       Update Alpine based systems
+        -o       Update Opensuse based systems
         -h       Display script usage
 
         Leave blank if you would like the script to determine what package manager to use.
 EOF
 }
 
+alma_linux=0
+alpine_linux=0
+opensuse_linux=0
+arch_linux=0
 redhat_linux=0
 debian_linux=0
-while getopts "drh" opt; do
+while getopts "drhoAap" opt; do
   case $opt in
     d)
       #Updating debian based linux systems
@@ -28,6 +36,22 @@ while getopts "drh" opt; do
     r)
       #Updating redhat based linux systems
       redhat_linux=1
+      ;;
+    A)
+      #Updating arch based linux systems
+      arch_linux=1
+      ;;
+    a)
+      #Updating alma based linux systems
+      alma_linux=1
+      ;;
+    p)
+      #Updating alpine based linux systems
+      alpine_linux=1
+      ;;
+    o)
+      #Updating debian based linux systems
+      opensuse_linux=1
       ;;
     h)
       # Display script usage
@@ -137,8 +161,20 @@ if (( redhat_linux )); then
 elif (( debian_linux )); then
     echo "Updating debian based linux system using apt"
     update_system "apt" 2>/dev/null || update_fail "apt"
+elif (( arch_linux )); then
+    echo "Updating debian based linux system using pacman"
+    update_system "pacman" 2>/dev/null || update_fail "pacman"
+elif (( alma_linux )); then
+    echo "Updating debian based linux system using yum"
+    update_system "yum" 2>/dev/null || update_fail "yum"
+elif (( alpine_linux )); then
+    echo "Updating debian based linux system using apk"
+    update_system "apk" 2>/dev/null || update_fail "apk"
+elif (( opensuse_linux )); then
+    echo "Updating debian based linux system using zypper"
+    update_system "zypper" 2>/dev/null || update_fail "zypper"
 else
-    echo "No version was specified, looking at the /etc/os-release and checking what package manager is available on the OS to determine what package manager to use."
+    echo "No version was specified, looking at the /etc/os-release and checking what package manager is available on the OS to determine how to update the system."
     package_manager_detection || log_error "Package detection failed"
     update_system ${package_manager} 2>/dev/null || update_fail ${package_manager}
 fi
