@@ -156,22 +156,16 @@ function update_fail(){
 }
 
 if (( redhat_linux )); then
-    echo "Updating redhat based linux system using yum"
     update_system "yum" 2>/dev/null || update_fail "yum"
 elif (( debian_linux )); then
-    echo "Updating debian based linux system using apt"
     update_system "apt" 2>/dev/null || update_fail "apt"
 elif (( arch_linux )); then
-    echo "Updating debian based linux system using pacman"
     update_system "pacman" 2>/dev/null || update_fail "pacman"
 elif (( alma_linux )); then
-    echo "Updating debian based linux system using yum"
     update_system "yum" 2>/dev/null || update_fail "yum"
 elif (( alpine_linux )); then
-    echo "Updating debian based linux system using apk"
     update_system "apk" 2>/dev/null || update_fail "apk"
 elif (( opensuse_linux )); then
-    echo "Updating debian based linux system using zypper"
     update_system "zypper" 2>/dev/null || update_fail "zypper"
 else
     echo "No version was specified, looking at the /etc/os-release and checking what package manager is available on the OS to determine how to update the system."

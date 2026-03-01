@@ -48,6 +48,26 @@ Update a Debian-based system (using apt):
 ./linux-update.sh -d
 ```
 
+Update a Arch-based system (using pacman):
+```bash
+./linux-update.sh -A
+```
+
+Update a Alma-based system (using yum):
+```bash
+./linux-update.sh -a
+```
+
+Update a Alpine-based system (using apk):
+```bash
+./linux-update.sh -p
+```
+
+Update a OpenSUSE-based system (using zypper):
+```bash
+./linux-update.sh -o
+```
+
 ### Display Help
 Show usage information:
 ```bash
@@ -58,8 +78,12 @@ Show usage information:
 
 | Option | Description |
 |--------|-------------|
-| `-r` | Force update using Red Hat package manager (yum) |
+| `-r` | Force update using RedHat package manager (yum/dnf) |
 | `-d` | Force update using Debian package manager (apt) |
+| `-A` | Force update using Arch package manager (pacman) |
+| `-a` | Force update using Alma package manager (yum/dnf) |
+| `-p` | Force update using Alpine package manager (apk) |
+| `-o` | Force update using OpenSUSE package manager (zypper) |
 | `-h` | Display usage information |
 | (none) | Auto-detect and use the appropriate package manager |
 
@@ -146,11 +170,15 @@ Updating redhat based linux system using yum
 ### Example 3: Display usage
 ```bash
 $ ./linux-update.sh -h
-    example: Usage [-d] [-r] [-h] []
+    example: Usage [-d] [-r] [-A] [-a] [-p] [-o] [-h] []
     
     -r       Update Redhat based systems
     -d       Update Debian based systems
-    -h       Display usage
+    -A       Update Arch based systems
+    -a       Update Alma based systems
+    -p       Update Alpine based systems
+    -o       Update Opensuse based systems
+    -h       Display script usage
 
     Leave blank if you would like the script to determine what package manager to use.
 ```
