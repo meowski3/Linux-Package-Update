@@ -7,51 +7,45 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 function usage(){
     cat <<EOF
-        example: Usage [-d] [-r] [-A] [-a] [-p] [-o] [-h] []
+        example: Usage [-d] [-y] [-A] [-a] [-p] [-z] [-h] []
         
-        -r       Update Redhat based systems
-        -d       Update Debian based systems
-        -A       Update Arch based systems
-        -a       Update Alma based systems
-        -p       Update Alpine based systems
-        -o       Update Opensuse based systems
+        -z       Update using zypper package manager
+        -d       Update using dnf package manager
+        -A       Update using apk package manager
+        -a       Update using apt package manager
+        -p       Update using pacman package manager
+        -y       Update using yum package manager
         -h       Display script usage
 
         Leave blank if you would like the script to determine what package manager to use.
 EOF
 }
 
-alma_linux=0
-alpine_linux=0
-opensuse_linux=0
-arch_linux=0
-redhat_linux=0
-debian_linux=0
-while getopts "drhoAap" opt; do
+while getopts "aydApzh" opt; do
   case $opt in
-    d)
-      #Updating debian based linux systems
-      debian_linux=1
+    a)
+      #Update using apt package manager
+      package_manager="apt"
       ;;
-    r)
-      #Updating redhat based linux systems
-      redhat_linux=1
+    y)
+      #Update using yum package manager
+      package_manager="yum"
+      ;;
+    d)
+      #Update using dnf package manager
+      package_manager="dnf"
       ;;
     A)
-      #Updating arch based linux systems
-      arch_linux=1
-      ;;
-    a)
-      #Updating alma based linux systems
-      alma_linux=1
+      #Update using apk package manager
+      package_manager="apk"
       ;;
     p)
-      #Updating alpine based linux systems
-      alpine_linux=1
+      #Update using pacman package manager
+      package_manager="pacman"
       ;;
-    o)
-      #Updating debian based linux systems
-      opensuse_linux=1
+    z)
+      #Update using zypper package manager
+      package_manager="zypper"
       ;;
     h)
       # Display script usage
@@ -88,23 +82,17 @@ function log_error() {
 }
 
 
-function package_manager_detection(){
+package_manager_list=(apt apk yum dnf pacman zypper)
 
-    if command -v apt-get &> /dev/null; then
-        package_manager="apt"
-    elif command -v yum &> /dev/null; then
-        package_manager="yum"
-    elif command -v dnf &> /dev/null; then
-        package_manager="dnf"
-    elif command -v pacman &> /dev/null; then
-        package_manager="pacman"
-    elif command -v zypper &> /dev/null; then
-        package_manager="zypper"
-    elif command -v apk &> /dev/null; then
-        package_manager="apk"
-    else
-        echo "unknown"
-    fi
+function package_manager_detection(){
+    for pm in ${package_manager_list[@]}; do
+        if command -v "$pm" &>/dev/null; then
+            package_manager="${pm}"
+            return 0
+        fi
+    done
+    log_error "No supported package manager found"
+    return 1
 }
 
 function update_system() {
@@ -149,26 +137,12 @@ function update_system() {
     esac
 }
 
-#This function is just meant to be ran in case of a failure to notify the user on the console
-function update_fail(){
-    log_error "No luck updating the system using $1, please try again or check logs to see what the issue might be."
+if [[ -z ${package_manager} ]]; then
+    log_info "No flag given — detecting package manager from OS"
+    package_manager_detection || exit 1
+fi
+
+update_system ${package_manager} || {
+    log_error "Failed to update using $package_manager. Check output above for details."
     exit 1
 }
-
-if (( redhat_linux )); then
-    update_system "yum" 2>/dev/null || update_fail "yum"
-elif (( debian_linux )); then
-    update_system "apt" 2>/dev/null || update_fail "apt"
-elif (( arch_linux )); then
-    update_system "pacman" 2>/dev/null || update_fail "pacman"
-elif (( alma_linux )); then
-    update_system "yum" 2>/dev/null || update_fail "yum"
-elif (( alpine_linux )); then
-    update_system "apk" 2>/dev/null || update_fail "apk"
-elif (( opensuse_linux )); then
-    update_system "zypper" 2>/dev/null || update_fail "zypper"
-else
-    echo "No version was specified, looking at the /etc/os-release and checking what package manager is available on the OS to determine how to update the system."
-    package_manager_detection || log_error "Package detection failed"
-    update_system ${package_manager} 2>/dev/null || update_fail ${package_manager}
-fi
