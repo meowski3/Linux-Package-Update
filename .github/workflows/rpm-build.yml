@@ -2,8 +2,8 @@ name: Build linux update RPM
 
 on:
   push:
-    tags:
-        - 'v*'       # Trigger on version tags e.g. v1.0.0
+    push:
+
   workflow_dispatch:   # Allow manual runs from the Actions tab
 
 jobs:
