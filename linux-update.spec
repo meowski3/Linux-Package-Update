@@ -42,7 +42,7 @@ echo "linux-update installed. Run 'linux-update -h' to see usage."
 # Nothing to clean up
 
 %changelog
-* %(date "+%a %b %d %Y") Your Name <you@example.com> - 1.0.0-1
+* %(date "+%a %b %d %Y")- 1.0.0-1
 - Initial RPM release
 - Supports apt, yum, dnf, pacman, zypper, and apk package managers
 - Auto-detects package manager if no flag is provided

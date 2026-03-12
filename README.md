@@ -71,7 +71,7 @@ Leave all flags blank to let the script **auto-detect** the package manager.
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/linux-update.git
+git clone https://github.com/linux-update.git
 cd linux-update
 
 # Make the script executable
